@@ -1,10 +1,10 @@
+// noinspection SpellCheckingInspection
+
 declare module '@krmao/react-native-umshare' {
     export const ShareUtil: {
-        share: (text, img, weburl, title, sharemedia, successCallback) => void
-        auth: (sharemedia, successCallback) => void
-        shareboard: (text, img, weburl, title, sharemedias, successCallback) => void
+        share: (text: string, img: any, weburl: string, title: string, sharemedia: any, successCallback: any) => void
+        auth: (sharemedia: any, successCallback: any) => void
+        shareboard: (text: string, img: any, weburl: string, title: string, sharemedias: any, successCallback: any) => void
     };
-
-    export const ReadableArray: any;
     export const Callback: any;
 }
