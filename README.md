@@ -11,16 +11,6 @@
 yarn add @krmao/react-native-umshare
 ```
 
-### local link for Developer
-
-```shell
-# cd react-native-umshare project
-yarn link
-
-# cd application project
-yarn link "@krmao/react-native-umshare"
-```
-
 ### Android 工程配置
 
 - ${applicationId} 包名下创建 ***ddshare*** 文件夹, 添加 ***DDShareActivity.java*** 继承于
