@@ -3,6 +3,9 @@
   "name": "@krmao/react-native-umshare",
   "version": "0.0.1",
   "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "react-native umshare library",
   "main": "index.js",
   "scripts": {
