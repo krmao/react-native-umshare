@@ -43,13 +43,45 @@ yarn add @krmao/react-native-umshare
      android:exported="true"
      android:launchMode="singleInstance"
      android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+  
+  <provider
+        android:name="androidx.core.content.FileProvider"
+        android:authorities="${applicationId}.fileprovider"
+        android:exported="false"
+        android:grantUriPermissions="true">
+    <meta-data
+            android:name="android.support.FILE_PROVIDER_PATHS"
+            android:resource="@xml/umshare_file_paths"
+            tools:replace="android:resource"/>
+  </provider>
+  ```
+- ***res/xml/umshare_file_paths.xml*** 合并到主工程
+  > ***如果写在库中会报合并错误:***<br/>
+  >
+  > Error: Attribute meta-data#android.support.FILE_PROVIDER_PATHS@resource value=(@xml/provider_paths)
+  > from [:xxx] AndroidManifest.xml:23:17-75 is also present at [:krmao_react-native-umshare]
+  > AndroidManifest.xml:64:17-59 value=(@xml/umshare_file_paths).
+  > Suggestion: add 'tools:replace="android:resource"' to <meta-data>
+  > element at AndroidManifest.xml to override. FAILURE: Build failed with an exception.
+  ```xml
+  <?xml version="1.0" encoding="utf-8"?>
+  <paths>
+      <root-path name="opensdk_root" path=""/>
+      <external-files-path name="umeng_cache" path="umeng_cache/"/>
+      <!-- QQ 官方分享SDK 共享路径 -->
+      <root-path name="opensdk_root" path=""/>
+      <external-files-path name="opensdk_external" path="Images/tmp"/>
+      <!-- 新浪 共享路径 -->
+      <!-- <external-files-path name="share_files" path="."/> -->
+  </paths>
   ```
 - ***MainActivity.java*** 添加
   ```java
+  import android.content.Intent;
   import com.umeng.socialize.UMShareAPI;
   public class MainActivity extends ReactActivity{
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data)  {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
