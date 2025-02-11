@@ -1,0 +1,31 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.umshare">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <queries>
+        <!--umshare 微信-->
+        <package android:name="com.tencent.mm"/>
+        <!-- qq-->
+        <package android:name="com.tencent.mobileqq"/>
+        <!-- 微博-->
+        <!-- <package android:name="com.sina.weibo"/>-->
+        <!-- 企业微信-->
+        <package android:name="com.tencent.wework"/>
+        <!-- QQ空间-->
+        <!-- <package android:name="com.qzone"/>-->
+        <!-- 钉钉-->
+        <package android:name="com.alibaba.android.rimed"/>
+        <!-- 支付宝-->
+        <!-- <package android:name="com.eg.android.AlipayGphone"/>-->
+        <!-- instagram-->
+        <package android:name="com.instagram.android"/>
+        <!-- 抖音-->
+        <!-- <package android:name="com.ss.android.ugc.aweme"/>-->
+    </queries>
+
+    <application>
+    </application>
+</manifest>
