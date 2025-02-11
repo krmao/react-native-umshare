@@ -1,15 +1,5 @@
 ## @krmao/react-native-umshare
 
-### local link for Developer
-
-```shell
-# cd react-native-umshare project
-yarn link
-
-# cd application project
-yarn link "@krmao/react-native-umshare"
-```
-
 ### .github/workflows
 
 > 每次推送自动打包发布到 npmjs<br/>
