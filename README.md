@@ -11,6 +11,53 @@
 yarn add @krmao/react-native-umshare
 ```
 
+### Usage
+> application gradle.properties add support platforms: <br/>
+> ***enableUMSharePlatforms=WEIXIN,DINGTALK,SMS,EMAIL,MORE,FACEBOOK,FACEBOOK_MESSAGER***
+```js
+import { SHARE_MEDIA, ShareUtil } from "@krmao/react-native-umshare";
+
+const config = {
+  ANDROID: {
+    UMENG: {
+      APPID: "xxxxxx",
+    }, WEIXIN: {
+      APPID: "xxxxxx", SECRET: "xxxxxx",
+    },
+  }, IOS: {
+    UMENG: {
+      APPID: "xxxxxx",
+    }, WEIXIN: {
+      APPID: "xxxxxx", SECRET: "xxxxxx",
+    },
+  },
+};
+ShareUtil.init(Platform.OS === "android" ? config.ANDROID : config.IOS);
+const sharePlatforms = [
+  // SHARE_MEDIA.WEIXIN,
+  // SHARE_MEDIA.GENERIC,
+  SHARE_MEDIA.SMS, SHARE_MEDIA.EMAIL, 
+  // SHARE_MEDIA.FACEBOOK,
+  // SHARE_MEDIA.FACEBOOK_MESSAGER,
+  // SHARE_MEDIA.TWITTER,
+  // SHARE_MEDIA.PINTEREST,
+  // SHARE_MEDIA.LINKEDIN,
+  // SHARE_MEDIA.WHATSAPP,
+  // SHARE_MEDIA.DINGTALK,
+  SHARE_MEDIA.MORE
+];
+const shareTitle = "分享标题文本";
+const shareDescription = "分享描述文本";
+const shareThumbImage = "https://xxxxxx.jpg";
+const shareWebUrl = "https://xxxxxx.html";
+// shareTitle 在短信和邮箱中无效, 所以可以拼接到 shareDescription 前面
+// '\n' 换行分享到短信有效, 分享到邮箱无效
+// 复制不包含链接
+ShareUtil.shareboard(shareTitle + "\n" + shareDescription + "\n", shareThumbImage, shareWebUrl, shareTitle, sharePlatforms, (shareResult) => {
+  console.log("share callback shareResult=", shareResult, typeof shareResult);
+});
+```
+
 ### Android 工程配置
 
 - ${applicationId} 包名下创建 ***ddshare*** 文件夹, 添加 ***DDShareActivity.java*** 继承于
@@ -51,20 +98,20 @@ yarn add @krmao/react-native-umshare
       <!-- <package android:name="com.ss.android.ugc.aweme"/>-->
   </queries>
   <application>
-  <!-- 友盟微信分享 -->
+  <!-- (如果包含) 友盟微信分享 -->
   <activity
      android:name=".wxapi.WXEntryActivity"
      android:configChanges="keyboardHidden|orientation|screenSize"
      android:exported="true"
      android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-  <!-- 友盟钉钉分享 -->
+  <!-- (如果包含) 友盟钉钉分享 -->
   <activity
      android:name=".ddshare.DDShareActivity"
      android:configChanges="keyboardHidden|orientation|screenSize"
      android:exported="true"
      android:launchMode="singleInstance"
      android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-   <!-- QQ分享需要授权 -->
+   <!-- (如果包含) QQ分享需要授权 -->
   <activity
           android:name="com.tencent.tauth.AuthActivity"
           android:exported="true"
@@ -79,7 +126,7 @@ yarn add @krmao/react-native-umshare
           <data android:scheme="tencent100424468" />
       </intent-filter>
   </activity>
-  <!-- QQ -->
+  <!-- (如果包含) QQ -->
   <activity
           android:name="com.tencent.connect.common.AssistActivity"
           android:configChanges="orientation|keyboardHidden|screenSize"
@@ -109,10 +156,10 @@ yarn add @krmao/react-native-umshare
   <paths>
       <root-path name="opensdk_root" path=""/>
       <external-files-path name="umeng_cache" path="umeng_cache/"/>
-      <!-- QQ 官方分享SDK 共享路径 -->
-      <root-path name="opensdk_root" path=""/>
+      <!-- (如果包含) QQ 官方分享SDK 共享路径 -->
+      <!-- <root-path name="opensdk_root" path=""/> -->
       <external-files-path name="opensdk_external" path="Images/tmp"/>
-      <!-- 新浪 共享路径 -->
+      <!-- (如果包含) 新浪 共享路径 -->
       <!-- <external-files-path name="share_files" path="."/> -->
   </paths>
   ```

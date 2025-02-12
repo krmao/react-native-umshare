@@ -24,6 +24,14 @@ def safeExtGet(String prop, def fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
 }
 
+def enableUMSharePlatforms = rootProject.hasProperty('enableUMSharePlatforms') ? rootProject.enableUMSharePlatforms.split(',') : []
+println('enableUMSharePlatforms= ' + enableUMSharePlatforms)
+
+def isEnableUMSharePlatform(String... platformNames) {
+    // 检查 enableUMSharePlatforms 中是否包含任何一个平台
+    return platformNames.any { enableUMSharePlatforms.contains(it) }
+}
+
 android {
     compileSdkVersion safeExtGet("compileSdkVersion", 33)
     buildToolsVersion safeExtGet("buildToolsVersion", '33.0.0')
@@ -40,8 +48,9 @@ android {
             manifest.srcFile 'src/main/AndroidManifest.xml'
             java.srcDirs = ['src/main/java']
             res.srcDirs = ['src/main/res',
-                           'share_android_7.3.5/platforms/email/res',
-                           'share_android_7.3.5/platforms/sms/res']
+                           isEnableUMSharePlatform("SMS") ? ['share_android_7.3.5/platforms/sms/res'] : null,
+                           isEnableUMSharePlatform("EMAIL") ? ['share_android_7.3.5/platforms/email/res'] : null,
+                           isEnableUMSharePlatform("FACEBOOK", "FACEBOOK_MESSAGER") ? ['share_android_7.3.5/platforms/facebook/res'] : null].findAll { it != null }
         }
     }
 
@@ -80,10 +89,17 @@ dependencies {
     api 'com.umeng.umsdk:share-wx:+' //微信完整版
     api 'com.tencent.mm.opensdk:wechat-sdk-android:6.8.24' //微信官方依赖库
     // api 'com.umeng.umsdk:share-qq:+' //QQ完整版
-    api files('share_android_7.3.5/platforms/QQ完整版/libs/open_sdk_3.5.16.4_r8c01346_lite.jar')//QQ官方依赖库
+    // api files('share_android_7.3.5/platforms/QQ完整版/libs/open_sdk_3.5.16.4_r8c01346_lite.jar')//QQ官方依赖库
     api 'com.umeng.umsdk:share-dingding:+' //钉钉完整版
     api 'com.alibaba.android:ddsharesdk:1.2.2' //钉钉官方依赖库
 
-    api files('share_android_7.3.5/platforms/email/libs/umeng-share-email-7.3.5.jar')//邮箱
-    api files('share_android_7.3.5/platforms/sms/libs/umeng-share-sms-7.3.5.jar')//短信
+    if (isEnableUMSharePlatform("EMAIL")) {
+        api files('share_android_7.3.5/platforms/email/libs/umeng-share-email-7.3.5.jar')//邮箱
+    }
+    if (isEnableUMSharePlatform("SMS")) {
+        api files('share_android_7.3.5/platforms/sms/libs/umeng-share-sms-7.3.5.jar')//短信
+    }
+    if (isEnableUMSharePlatform("FACEBOOK", "FACEBOOK_MESSAGER")) {
+        api files('share_android_7.3.5/platforms/facebook/libs/umeng-share-facebook-7.3.5.jar')//facebook
+    }
 }
