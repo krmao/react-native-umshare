@@ -28,48 +28,41 @@ Pod::Spec.new do |s|
   s.libraries = 'c++', 'z', 'sqlite3'
 
   # 链接的其他系统库
-  s.frameworks = 'CoreTelephony', 'SystemConfiguration', 'ImageIO', 'Photos'
+  s.frameworks = 'CoreTelephony', 'SystemConfiguration', 'WebKit', 'Photos'
 
   # 添加 vendored frameworks
   s.vendored_frameworks = [
-    'ios/SocialLibraries/DingDing/DTShareKit.framework',
-    'ios/SocialLibraries/Facebook/Bolts.framework',
-    'ios/SocialLibraries/Facebook/FBSDKCoreKit.framework',
-    'ios/SocialLibraries/Facebook/FBSDKLoginKit.framework',
-    'ios/SocialLibraries/Facebook/FBSDKMessengerShareKit.framework',
-    'ios/SocialLibraries/Facebook/FBSDKShareKit.framework',
-    'ios/SocialLibraries/Linkedin/linkedin-sdk.framework',
-    'ios/SocialLibraries/QQ/QQSDK/TencentOpenAPI.framework',
-    'ios/SocialLibraries/Twitter/TwitterCore.framework',
-    'ios/SocialLibraries/Twitter/TwitterKit.framework',
-    'ios/UMCommon.framework',
-    'ios/UMShare.framework',
-    'ios/UMShareUI/UShareUI.framework',
+    'ios/share_ios_6.10.13/SocialLibraries/Linkedin/linkedin-sdk.framework',
   ]
 
   # 添加 vendored 静态库（如果有）
   s.vendored_libraries = [
-    'ios/SocialLibraries/DingDing/libSocialDingDing.a',
-    'ios/SocialLibraries/Email/libSocialEmail.a',
-    'ios/SocialLibraries/Facebook/libSocialFacebook.a',
-    'ios/SocialLibraries/Instagram/libSocialInstagram.a',
-    'ios/SocialLibraries/Linkedin/libSocialLinkedin.a',
-    'ios/SocialLibraries/Pinterest/libSocialPinterest.a',
-    'ios/SocialLibraries/QQ/libSocialQQ.a',
-    'ios/SocialLibraries/SMS/libSocialSMS.a',
-    'ios/SocialLibraries/Twitter/libSocialTwitter.a',
-    'ios/SocialLibraries/WeChat/libSocialWeChat.a',
-    'ios/SocialLibraries/WeChat/WechatSDK/libSocialOfficialWeChat.a',
-    'ios/SocialLibraries/WeChat/WechatSDK/libWeChatSDK.a',
-    'ios/SocialLibraries/WhatsApp/libSocialWhatsApp.a'
-    'ios/UMSocialSDKPlugin/libUMSocialCloudShare.a'
+    'ios/share_ios_6.10.13/SocialLibraries/Linkedin/libSocialLinkedin.a',
   ]
 
   # React Native 依赖
   s.dependency 'React'
 
+  # 在这里添加依赖库
+  s.dependency 'UMCommon'   # 必须集成
+  s.dependency 'UMDevice'   # 必须集成
+
+  # 可选，UI模块（分享面板），由原来的UMCShare/UI变为了UMShare/UI
+  s.dependency 'UMShare/UI'
+
+  # 分享SDK 在线依赖其它平台仅支持手动集成[友盟+官网-开发者中心-sdk下载页-sdk下载]
+  s.dependency 'UMShare/Social/WeChat'
+  # s.dependency 'UMShare/Social/QQ'
+  s.dependency 'UMShare/Social/DingDing'
+  # s.dependency 'UMShare/Social/WeChatWork'
+  s.dependency 'UMShare/Social/SMS'
+  s.dependency 'UMShare/Social/Email'
+  s.dependency 'UMShare/Social/Facebook'
+  # s.dependency 'UMShare/Social/Twitter'
+  # s.dependency 'UMShare/Social/WhatsApp'
+  # s.dependency 'UMShare/Social/Instagram'
+  # s.dependency 'UMShare/Social/Pinterest'
+
   # 添加 Other Linker Flags
   s.xcconfig = { 'OTHER_LDFLAGS' => '-ObjC' }
-
-  s.prefix_header_file = 'ios/SocialLibraries/Facebook/facebook_ios_sdk_Prefix.pch'
 end
