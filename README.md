@@ -12,39 +12,41 @@ yarn add @krmao/react-native-umshare
 ```
 
 ### Usage
+
 > application gradle.properties add support platforms: <br/>
 > ***enableUMSharePlatforms=WEIXIN,DINGTALK,SMS,EMAIL,MORE,FACEBOOK,FACEBOOK_MESSAGER***
+
 ```js
-import { SHARE_MEDIA, ShareUtil } from "@krmao/react-native-umshare";
+import {SHARE_MEDIA, ShareUtil} from "@krmao/react-native-umshare";
 
 const config = {
-  ANDROID: {
-    UMENG: {
-      APPID: "xxxxxx",
-    }, WEIXIN: {
-      APPID: "xxxxxx", SECRET: "xxxxxx",
+    ANDROID: {
+        UMENG: {
+            APPID: "xxxxxx",
+        }, WEIXIN: {
+            APPID: "xxxxxx", SECRET: "xxxxxx",
+        },
+    }, IOS: {
+        UMENG: {
+            APPID: "xxxxxx",
+        }, WEIXIN: {
+            APPID: "xxxxxx", SECRET: "xxxxxx",
+        },
     },
-  }, IOS: {
-    UMENG: {
-      APPID: "xxxxxx",
-    }, WEIXIN: {
-      APPID: "xxxxxx", SECRET: "xxxxxx",
-    },
-  },
 };
 ShareUtil.init(Platform.OS === "android" ? config.ANDROID : config.IOS);
 const sharePlatforms = [
-  // SHARE_MEDIA.WEIXIN,
-  // SHARE_MEDIA.GENERIC,
-  SHARE_MEDIA.SMS, SHARE_MEDIA.EMAIL, 
-  // SHARE_MEDIA.FACEBOOK,
-  // SHARE_MEDIA.FACEBOOK_MESSAGER,
-  // SHARE_MEDIA.TWITTER,
-  // SHARE_MEDIA.PINTEREST,
-  // SHARE_MEDIA.LINKEDIN,
-  // SHARE_MEDIA.WHATSAPP,
-  // SHARE_MEDIA.DINGTALK,
-  SHARE_MEDIA.MORE
+    // SHARE_MEDIA.WEIXIN,
+    // SHARE_MEDIA.GENERIC,
+    SHARE_MEDIA.SMS, SHARE_MEDIA.EMAIL,
+    // SHARE_MEDIA.FACEBOOK,
+    // SHARE_MEDIA.FACEBOOK_MESSAGER,
+    // SHARE_MEDIA.TWITTER,
+    // SHARE_MEDIA.PINTEREST,
+    // SHARE_MEDIA.LINKEDIN,
+    // SHARE_MEDIA.WHATSAPP,
+    // SHARE_MEDIA.DINGTALK,
+    SHARE_MEDIA.MORE
 ];
 const shareTitle = "分享标题文本";
 const shareDescription = "分享描述文本";
@@ -54,7 +56,7 @@ const shareWebUrl = "https://xxxxxx.html";
 // '\n' 换行分享到短信有效, 分享到邮箱无效
 // 复制不包含链接
 ShareUtil.shareboard(shareTitle + "\n" + shareDescription + "\n", shareThumbImage, shareWebUrl, shareTitle, sharePlatforms, (shareResult) => {
-  console.log("share callback shareResult=", shareResult, typeof shareResult);
+    console.log("share callback shareResult=", shareResult, typeof shareResult);
 });
 ```
 
@@ -78,69 +80,78 @@ ShareUtil.shareboard(shareTitle + "\n" + shareDescription + "\n", shareThumbImag
 - ***AndroidManifest.xml*** 添加
   ```xml 
   <queries>
-      <!--umshare 微信-->
-      <package android:name="com.tencent.mm" />
-      <!-- qq-->
-      <package android:name="com.tencent.mobileqq" />
-      <!-- 微博-->
-      <!-- <package android:name="com.sina.weibo"/>-->
-      <!-- 企业微信-->
-      <package android:name="com.tencent.wework" />
-      <!-- QQ空间-->
-      <!-- <package android:name="com.qzone"/>-->
-      <!-- 钉钉-->
-      <package android:name="com.alibaba.android.rimed" />
-      <!-- 支付宝-->
-      <!-- <package android:name="com.eg.android.AlipayGphone"/>-->
-      <!-- instagram-->
-      <package android:name="com.instagram.android" />
-      <!-- 抖音-->
-      <!-- <package android:name="com.ss.android.ugc.aweme"/>-->
+    <!-- umshare 微信 -->
+    <package android:name="com.tencent.mm"/>
+    <!-- umshare qq -->
+    <package android:name="com.tencent.mobileqq"/>
+    <!-- umshare 微博 -->
+    <!-- <package android:name="com.sina.weibo"/>-->
+    <!-- umshare 企业微信 -->
+    <package android:name="com.tencent.wework"/>
+    <!-- umshare QQ空间 -->
+    <!-- <package android:name="com.qzone"/>-->
+    <!-- umshare 钉钉 -->
+    <package android:name="com.alibaba.android.rimed"/>
+    <!-- umshare 支付宝 -->
+    <!-- <package android:name="com.eg.android.AlipayGphone"/>-->
+    <!-- umshare instagram -->
+    <package android:name="com.instagram.android"/>
+    <!-- umshare 抖音 -->
+    <!-- <package android:name="com.ss.android.ugc.aweme"/>-->
   </queries>
   <application>
-  <!-- (如果包含) 友盟微信分享 -->
-  <activity
-     android:name=".wxapi.WXEntryActivity"
-     android:configChanges="keyboardHidden|orientation|screenSize"
-     android:exported="true"
-     android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-  <!-- (如果包含) 友盟钉钉分享 -->
-  <activity
-     android:name=".ddshare.DDShareActivity"
-     android:configChanges="keyboardHidden|orientation|screenSize"
-     android:exported="true"
-     android:launchMode="singleInstance"
-     android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-   <!-- (如果包含) QQ分享需要授权 -->
-  <activity
-          android:name="com.tencent.tauth.AuthActivity"
-          android:exported="true"
-          android:launchMode="singleTask"
-          android:noHistory="true">
-      <intent-filter>
-          <action android:name="android.intent.action.VIEW" />
-
-          <category android:name="android.intent.category.DEFAULT" />
-          <category android:name="android.intent.category.BROWSABLE" />
-
-          <data android:scheme="tencent100424468" />
-      </intent-filter>
-  </activity>
-  <!-- (如果包含) QQ -->
-  <activity
-          android:name="com.tencent.connect.common.AssistActivity"
-          android:configChanges="orientation|keyboardHidden|screenSize"
-          android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-  <provider
-        android:name="androidx.core.content.FileProvider"
-        android:authorities="${applicationId}.fileprovider"
-        android:exported="false"
-        android:grantUriPermissions="true">
-    <meta-data
-            android:name="android.support.FILE_PROVIDER_PATHS"
-            android:resource="@xml/umshare_file_paths"
-            tools:replace="android:resource"/>
-  </provider>
+      <!-- (如果包含) Facebook App ID meta-data, facebook的 id 必须写在 string 文件中且名字必须用 facebook_app_id -->
+      <meta-data
+              android:name="com.facebook.sdk.ApplicationId"
+              android:value="@string/facebook_app_id"/>
+      <!-- (如果包含) 友盟微信分享 -->
+      <activity
+              android:name=".wxapi.WXEntryActivity"
+              android:configChanges="keyboardHidden|orientation|screenSize"
+              android:exported="true"
+              android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+      <!-- (如果包含) 友盟钉钉分享 -->
+      <activity
+              android:name=".ddshare.DDShareActivity"
+              android:configChanges="keyboardHidden|orientation|screenSize"
+              android:exported="true"
+              android:launchMode="singleInstance"
+              android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+      <!-- 友盟Facebook分享 https://developer.umeng.com/docs/128606/detail/129622 -->
+      <activity
+              android:name="com.umeng.facebook.FacebookActivity"
+              android:configChanges="keyboardHidden|orientation|screenSize"
+              android:exported="true"
+              android:launchMode="singleInstance"
+              android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+      <!-- (如果包含) QQ分享需要授权 -->
+      <activity
+              android:name="com.tencent.tauth.AuthActivity"
+              android:exported="true"
+              android:launchMode="singleTask"
+              android:noHistory="true">
+          <intent-filter>
+              <action android:name="android.intent.action.VIEW"/>
+              <category android:name="android.intent.category.DEFAULT"/>
+              <category android:name="android.intent.category.BROWSABLE"/>
+              <data android:scheme="tencent100424468"/>
+          </intent-filter>
+      </activity>
+      <!-- (如果包含) QQ -->
+      <activity
+              android:name="com.tencent.connect.common.AssistActivity"
+              android:configChanges="orientation|keyboardHidden|screenSize"
+              android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+      <provider
+              android:name="androidx.core.content.FileProvider"
+              android:authorities="${applicationId}.fileprovider"
+              android:exported="false"
+              android:grantUriPermissions="true">
+          <meta-data
+                  android:name="android.support.FILE_PROVIDER_PATHS"
+                  android:resource="@xml/umshare_file_paths"
+                  tools:replace="android:resource"/>
+      </provider>
   </application>
   ```
 - ***res/xml/umshare_file_paths.xml*** 合并到主工程
@@ -175,6 +186,11 @@ ShareUtil.shareboard(shareTitle + "\n" + shareDescription + "\n", shareThumbImag
     }
   }
   ```
+
+- 错误列表
+    - 错误码：2003 错误信息：分享失败----Unable to show the provided content via the web or the installed version of the
+      Facebook app. Some dialogs are only supported starting API 14.
+      > [解决办法：一定要做授权登录（授权登录效果在手机重启后也能持久化保留，只受facebook授予的token有效期限制，可以每次分享前调用isAuthorize接口判断是否授权，如果返回false则调用authorize接口授权](https://blog.csdn.net/Young_Time/article/details/96157567)
 
 ### IOS 工程配置
 
