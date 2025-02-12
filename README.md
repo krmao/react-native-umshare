@@ -62,14 +62,14 @@ ShareUtil.shareboard(shareTitle + "\n" + shareDescription + "\n", shareThumbImag
 
 ### Android 工程配置
 
-- ${applicationId} 包名下创建 ***ddshare*** 文件夹, 添加 ***DDShareActivity.java*** 继承于
+- (如果包含) 钉钉分享, 在 ${applicationId} 包名下创建 ***ddshare*** 文件夹, 添加 ***DDShareActivity.java*** 继承于
   ***com.umshare.ddshare.ABSDDShareActivity.java***
     ```java
     package ${applicationId};
     import com.umshare.ddshare.ABSDDShareActivity;
     public class DDShareActivity extends ABSDDShareActivity { }
     ```
-- ${applicationId} 包名下创建 ***wxapi*** 文件夹, 添加 ***WXEntryActivity.java*** 继承于
+- (如果包含) 微信分享, 在 ${applicationId} 包名下创建 ***wxapi*** 文件夹, 添加 ***WXEntryActivity.java*** 继承于
   ***com.umshare.wxshare.ABSWXEntryActivity.java***
     ```java
     package ${applicationId};
@@ -80,23 +80,23 @@ ShareUtil.shareboard(shareTitle + "\n" + shareDescription + "\n", shareThumbImag
 - ***AndroidManifest.xml*** 添加
   ```xml 
   <queries>
-    <!-- umshare 微信 -->
+    <!-- (如果包含) umshare 微信 -->
     <package android:name="com.tencent.mm"/>
-    <!-- umshare qq -->
+    <!-- (如果包含) umshare qq -->
     <package android:name="com.tencent.mobileqq"/>
-    <!-- umshare 微博 -->
+    <!-- (如果包含) umshare 微博 -->
     <!-- <package android:name="com.sina.weibo"/>-->
-    <!-- umshare 企业微信 -->
+    <!-- (如果包含) umshare 企业微信 -->
     <package android:name="com.tencent.wework"/>
-    <!-- umshare QQ空间 -->
+    <!-- (如果包含) umshare QQ空间 -->
     <!-- <package android:name="com.qzone"/>-->
-    <!-- umshare 钉钉 -->
+    <!-- (如果包含) umshare 钉钉 -->
     <package android:name="com.alibaba.android.rimed"/>
-    <!-- umshare 支付宝 -->
+    <!-- (如果包含) umshare 支付宝 -->
     <!-- <package android:name="com.eg.android.AlipayGphone"/>-->
-    <!-- umshare instagram -->
+    <!-- (如果包含) umshare instagram -->
     <package android:name="com.instagram.android"/>
-    <!-- umshare 抖音 -->
+    <!-- (如果包含) umshare 抖音 -->
     <!-- <package android:name="com.ss.android.ugc.aweme"/>-->
   </queries>
   <application>
