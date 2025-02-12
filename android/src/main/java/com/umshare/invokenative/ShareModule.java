@@ -1,6 +1,5 @@
 package com.umshare.invokenative;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
@@ -41,8 +40,6 @@ import javax.annotation.Nullable;
  */
 
 public class ShareModule extends ReactContextBaseJavaModule {
-    @SuppressLint("StaticFieldLeak")
-    private static Activity ma;
     private final int SUCCESS = 200;
     private final int ERROR = 0;
     private final int CANCEL = -1;
@@ -55,15 +52,6 @@ public class ShareModule extends ReactContextBaseJavaModule {
     public ShareModule(ReactApplicationContext reactContext) {
         super(reactContext);
         contect = reactContext;
-        // 自动初始化 Social SDK，避免手动调用
-        Activity activity = getCurrentActivity();
-        if (activity != null) {
-            initSocialSDK(activity);
-        }
-    }
-
-    public static void initSocialSDK(Activity activity) {
-        ma = activity;
     }
 
     @NonNull
@@ -89,7 +77,7 @@ public class ShareModule extends ReactContextBaseJavaModule {
             ReadableMap umengConfig = platformConfig.getMap("UMENG");
             if (umengConfig != null) {
                 String umengAppId = umengConfig.getString("APPID");
-                RNUMConfigure.init(getCurrentActivity(), umengAppId, "umeng", UMConfigure.DEVICE_TYPE_PHONE, "");
+                RNUMConfigure.init(activity, umengAppId, "umeng", UMConfigure.DEVICE_TYPE_PHONE, "");
             }
         }
         if (platformConfig.hasKey("WEIXIN")) {
@@ -137,7 +125,10 @@ public class ShareModule extends ReactContextBaseJavaModule {
         runOnMainThread(new Runnable() {
             @Override
             public void run() {
-
+                Activity activity = getCurrentActivity();
+                if(activity == null || activity.isFinishing()){
+                    return;
+                }
                 if (!TextUtils.isEmpty(weburl)) {
                     UMWeb web = new UMWeb(weburl);
                     web.setTitle(title);
@@ -145,11 +136,11 @@ public class ShareModule extends ReactContextBaseJavaModule {
                     if (getImage(img) != null) {
                         web.setThumb(getImage(img));
                     }
-                    new ShareAction(ma).withText(text).withMedia(web).setPlatform(getShareMediaByName(sharemedia)).setCallback(getUMShareListener(successCallback)).share();
+                    new ShareAction(activity).withText(text).withMedia(web).setPlatform(getShareMediaByName(sharemedia)).setCallback(getUMShareListener(successCallback)).share();
                 } else if (getImage(img) != null) {
-                    new ShareAction(ma).withText(text).withMedia(getImage(img)).setPlatform(getShareMediaByName(sharemedia)).setCallback(getUMShareListener(successCallback)).share();
+                    new ShareAction(activity).withText(text).withMedia(getImage(img)).setPlatform(getShareMediaByName(sharemedia)).setCallback(getUMShareListener(successCallback)).share();
                 } else {
-                    new ShareAction(ma).withText(text).setPlatform(getShareMediaByName(sharemedia)).setCallback(getUMShareListener(successCallback)).share();
+                    new ShareAction(activity).withText(text).setPlatform(getShareMediaByName(sharemedia)).setCallback(getUMShareListener(successCallback)).share();
                 }
 
             }
@@ -182,16 +173,17 @@ public class ShareModule extends ReactContextBaseJavaModule {
     }
 
     private UMImage getImage(String url) {
-        if (TextUtils.isEmpty(url)) {
+        Activity activity = getCurrentActivity();
+        if (activity == null || activity.isFinishing() || TextUtils.isEmpty(url)) {
             return null;
         } else if (url.startsWith("http")) {
-            return new UMImage(ma, url);
+            return new UMImage(activity, url);
         } else if (url.startsWith("/")) {
-            return new UMImage(ma, url);
+            return new UMImage(activity, url);
         } else if (url.startsWith("res")) {
-            return new UMImage(ma, ResContainer.getResourceId(ma, "drawable", url.replace("res/", "")));
+            return new UMImage(activity, ResContainer.getResourceId(activity, "drawable", url.replace("res/", "")));
         } else {
-            return new UMImage(ma, url);
+            return new UMImage(activity, url);
         }
     }
 
@@ -200,7 +192,11 @@ public class ShareModule extends ReactContextBaseJavaModule {
         runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                UMShareAPI.get(ma).getPlatformInfo(ma, getShareMediaByName(sharemedia), new UMAuthListener() {
+                Activity activity = getCurrentActivity();
+                if(activity == null || activity.isFinishing()){
+                    return;
+                }
+                UMShareAPI.get(activity).getPlatformInfo(activity, getShareMediaByName(sharemedia), new UMAuthListener() {
                     @Override
                     public void onStart(SHARE_MEDIA share_media) {
                     }
@@ -237,6 +233,10 @@ public class ShareModule extends ReactContextBaseJavaModule {
         runOnMainThread(new Runnable() {
             @Override
             public void run() {
+                Activity activity = getCurrentActivity();
+                if(activity == null || activity.isFinishing()){
+                    return;
+                }
                 if (!TextUtils.isEmpty(weburl)) {
                     UMWeb web = new UMWeb(weburl);
                     web.setTitle(title);
@@ -244,13 +244,12 @@ public class ShareModule extends ReactContextBaseJavaModule {
                     if (getImage(img) != null) {
                         web.setThumb(getImage(img));
                     }
-                    new ShareAction(ma).withText(text).withMedia(web).setDisplayList(getShareMediasByNames(sharemedias)).setCallback(getUMShareListener(successCallback)).open();
+                    new ShareAction(activity).withText(text).withMedia(web).setDisplayList(getShareMediasByNames(sharemedias)).setCallback(getUMShareListener(successCallback)).open();
                 } else if (getImage(img) != null) {
-                    new ShareAction(ma).withText(text).withMedia(getImage(img)).setDisplayList(getShareMediasByNames(sharemedias)).setCallback(getUMShareListener(successCallback)).open();
+                    new ShareAction(activity).withText(text).withMedia(getImage(img)).setDisplayList(getShareMediasByNames(sharemedias)).setCallback(getUMShareListener(successCallback)).open();
                 } else {
-                    new ShareAction(ma).withText(text).setDisplayList(getShareMediasByNames(sharemedias)).setCallback(getUMShareListener(successCallback)).open();
+                    new ShareAction(activity).withText(text).setDisplayList(getShareMediasByNames(sharemedias)).setCallback(getUMShareListener(successCallback)).open();
                 }
-
             }
         });
     }

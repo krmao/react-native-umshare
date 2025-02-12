@@ -4,48 +4,4 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <queries>
-        <!--umshare 微信-->
-        <package android:name="com.tencent.mm" />
-        <!-- qq-->
-        <package android:name="com.tencent.mobileqq" />
-        <!-- 微博-->
-        <!-- <package android:name="com.sina.weibo"/>-->
-        <!-- 企业微信-->
-        <package android:name="com.tencent.wework" />
-        <!-- QQ空间-->
-        <!-- <package android:name="com.qzone"/>-->
-        <!-- 钉钉-->
-        <package android:name="com.alibaba.android.rimed" />
-        <!-- 支付宝-->
-        <!-- <package android:name="com.eg.android.AlipayGphone"/>-->
-        <!-- instagram-->
-        <package android:name="com.instagram.android" />
-        <!-- 抖音-->
-        <!-- <package android:name="com.ss.android.ugc.aweme"/>-->
-    </queries>
-
-    <application>
-        <!-- QQ分享需要授权 -->
-        <activity
-                android:name="com.tencent.tauth.AuthActivity"
-                android:exported="true"
-                android:launchMode="singleTask"
-                android:noHistory="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="tencent100424468" />
-            </intent-filter>
-        </activity>
-        <!-- QQ -->
-        <activity
-                android:name="com.tencent.connect.common.AssistActivity"
-                android:configChanges="orientation|keyboardHidden|screenSize"
-                android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-    </application>
 </manifest>

@@ -30,6 +30,27 @@ yarn add @krmao/react-native-umshare
     <img src="https://help-static-aliyun-doc.aliyuncs.com/assets/img/zh-CN/4973735161/p248305.png" width="150" alt=""/>
 - ***AndroidManifest.xml*** 添加
   ```xml 
+  <queries>
+      <!--umshare 微信-->
+      <package android:name="com.tencent.mm" />
+      <!-- qq-->
+      <package android:name="com.tencent.mobileqq" />
+      <!-- 微博-->
+      <!-- <package android:name="com.sina.weibo"/>-->
+      <!-- 企业微信-->
+      <package android:name="com.tencent.wework" />
+      <!-- QQ空间-->
+      <!-- <package android:name="com.qzone"/>-->
+      <!-- 钉钉-->
+      <package android:name="com.alibaba.android.rimed" />
+      <!-- 支付宝-->
+      <!-- <package android:name="com.eg.android.AlipayGphone"/>-->
+      <!-- instagram-->
+      <package android:name="com.instagram.android" />
+      <!-- 抖音-->
+      <!-- <package android:name="com.ss.android.ugc.aweme"/>-->
+  </queries>
+  <application>
   <!-- 友盟微信分享 -->
   <activity
      android:name=".wxapi.WXEntryActivity"
@@ -43,7 +64,26 @@ yarn add @krmao/react-native-umshare
      android:exported="true"
      android:launchMode="singleInstance"
      android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-  
+   <!-- QQ分享需要授权 -->
+  <activity
+          android:name="com.tencent.tauth.AuthActivity"
+          android:exported="true"
+          android:launchMode="singleTask"
+          android:noHistory="true">
+      <intent-filter>
+          <action android:name="android.intent.action.VIEW" />
+
+          <category android:name="android.intent.category.DEFAULT" />
+          <category android:name="android.intent.category.BROWSABLE" />
+
+          <data android:scheme="tencent100424468" />
+      </intent-filter>
+  </activity>
+  <!-- QQ -->
+  <activity
+          android:name="com.tencent.connect.common.AssistActivity"
+          android:configChanges="orientation|keyboardHidden|screenSize"
+          android:theme="@android:style/Theme.Translucent.NoTitleBar" />
   <provider
         android:name="androidx.core.content.FileProvider"
         android:authorities="${applicationId}.fileprovider"
@@ -54,6 +94,7 @@ yarn add @krmao/react-native-umshare
             android:resource="@xml/umshare_file_paths"
             tools:replace="android:resource"/>
   </provider>
+  </application>
   ```
 - ***res/xml/umshare_file_paths.xml*** 合并到主工程
   > ***如果写在库中会报合并错误:***<br/>
