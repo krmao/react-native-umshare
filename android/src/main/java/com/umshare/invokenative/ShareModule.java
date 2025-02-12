@@ -92,6 +92,17 @@ public class ShareModule extends ReactContextBaseJavaModule {
                 }
             }
         }
+        if (platformConfig.hasKey("DINGTALK")) {
+            ReadableMap config = platformConfig.getMap("DINGTALK");
+            if (config != null) {
+                String appId = config.getString("APPID");
+                if (appId != null) {
+                    PlatformConfig.setDing(appId);
+                    //noinspection deprecation
+                    PlatformConfig.setDingFileProvider(packageName + ".fileprovider");
+                }
+            }
+        }
         // QQ设置
         // PlatformConfig.setQQZone("101830139", "5d63ae8858f1caab67715ccd6c18d7a5");
         // PlatformConfig.setQQFileProvider("com.tencent.sample2.fileprovider");
