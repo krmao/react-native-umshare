@@ -271,3 +271,18 @@ ShareUtil.shareboard(shareTitle + "\n" + shareDescription + "\n", shareThumbImag
   > “wb”+新浪appKey
   >
   > wb3921700954
+
+- AppDelegate.m
+  ```objc
+  #import "UMShare/UMSocialGlobal.h"
+  #import "UMShare/UMSocialManager.h"
+  
+  -(BOOL)application:(UIApplication*)application handleOpenURL:(NSURL *)url
+  {
+      BOOL result =[[UMSocialManager defaultManager] handleOpenURL:url];
+      if(!result){
+          // 其他如支付等SDK的回调
+      }
+      return result;
+  }
+  ```

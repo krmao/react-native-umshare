@@ -2,7 +2,6 @@
 import ShareUtil from './src/ShareUtil';
 
 const SHARE_MEDIA = {
-    GENERIC: "GENERIC",
     SMS: "SMS",
     EMAIL: "EMAIL",
     SINA: "SINA",
