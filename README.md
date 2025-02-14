@@ -1,8 +1,5 @@
 ## @krmao/react-native-umshare
 
-> ***ios 6.9.4***<br>
-> ***android 6.9.4***
-
 [![npm version](https://badge.fury.io/js/@krmao%2Freact-native-umshare.svg)](https://badge.fury.io/js/@krmao%2Freact-native-umshare)
 
 ### Install
