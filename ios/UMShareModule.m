@@ -217,15 +217,13 @@ RCT_EXPORT_METHOD(init : (NSDictionary *)platformConfig) {
         NSDictionary *config = platformConfig[@"DINGTALK"];
         if (config) {
             NSString *appId = config[@"APPID"];
-            NSString *secret = config[@"SECRET"];
-            if (appId && secret) {
+            if (appId) {
                 NSLog(@"UMShare DINGTALK appId=%@", appId);
-                NSLog(@"UMShare DINGTALK secret=%@", secret);
                 // 设置钉钉的appKey和appSecret
                 [[UMSocialManager defaultManager]
-                 setPlaform:UMSocialPlatformType_WechatSession
+                 setPlaform:UMSocialPlatformType_DingDing
                  appKey:appId
-                 appSecret:secret
+                 appSecret:nil
                  redirectURL:@"http://mobile.umeng.com/social"];
             }
         }
@@ -384,9 +382,7 @@ RCT_EXPORT_METHOD(auth: (NSString *)platform completion: (RCTResponseSenderBlock
             } else {
                 UMSocialUserInfoResponse *authInfo = result;
 
-                NSMutableDictionary *retDict =
-                [NSMutableDictionary
-                 dictionaryWithCapacity:8];
+                NSMutableDictionary *retDict =  [NSMutableDictionary dictionaryWithCapacity:8];
                 retDict[@"uid"] = authInfo.uid;
                 retDict[@"openid"] = authInfo.openid;
                 retDict[@"unionid"] = authInfo.unionId;
